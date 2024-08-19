@@ -17,28 +17,27 @@
 
         <h2>Comments:</h2>
         <?php
-        session_start();
+session_start(); // Starts or resumes the session
 
-        // Initialize comments array if not already done
-        if (!isset($_SESSION['comments'])) {
-            $_SESSION['comments'] = [];
-        }
+// Check if the 'comments' session variable is set; if not, initialize it
+if (!isset($_SESSION['comments'])) {
+    $_SESSION['comments'] = [];
+}
 
-        // Check if the request method is GET and if the 'comment' & 'name' parameter is set
-        if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['comment']) && isset($_GET['name'])) {
+// Check if the request method is GET and if 'comment' and 'name' are set
+if ($_SERVER['REQUEST_METHOD'] === "GET" && isset($_GET['comment']) && isset($_GET['name'])) {
+    // Retrieve user input directly without escaping
+    $xss = $_GET['comment'];
+    $name = $_GET['name'];
+    
+    // Add the user input directly to the session variable
+    $_SESSION['comments'][] = ['name' => $name, 'comment' => $xss];
+}
 
-            // Retrieve the 'comment' & 'name' parameter from the GET request 
-            $xss = $_GET['comment'];
-            $name = htmlspecialchars($_GET['name']);
-
-            // Store the sanitized comment and name in the session
-            $_SESSION['comments'][] = ['name' => $name, 'comment' => $xss];
-        }
-
-        // Display comments
-        foreach ($_SESSION['comments'] as $data) {
-            echo '<p><strong>' . $data['name'] . ':</strong> ' . $data['comment'] . '</p>';
-        }
-        ?>
+// Display stored comments
+foreach ($_SESSION['comments'] as $entry) {
+    echo '<p><strong>' . $entry['name'] . ':</strong> ' . $entry['comment'] . '</p>';
+}
+?>
     </body>
 </html>
