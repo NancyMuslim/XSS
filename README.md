@@ -1,1 +1,1 @@
-# XSS
+# Vulnerabilities
