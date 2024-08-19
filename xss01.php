@@ -17,7 +17,7 @@
 
         <h2>Comments:</h2>
         <?php
-session_start(); // Starts or resumes the session
+session_start();
 
 // Check if the 'comments' session variable is set; if not, initialize it
 if (!isset($_SESSION['comments'])) {
